@@ -1,0 +1,138 @@
+<html>
+<head>
+    <title>Image</title>
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid w-50">
+        <div class="row">
+            <div class="col-12">
+                <form method="POST" action="add_tool.php" enctype="multipart/form-data">
+                    <h2>Formulario <span class="badge badge-secondary">2.0</span></h2>
+                    <div class="form-group">
+                        <label for="symbol">Simbolo</label>
+                        <input name="symbol" id="symbol" type="text" class="form-control"  placeholder="Gh">
+                    </div>
+                    <div class="form-group">
+                        <label for="tool">Herramienta</label>
+                        <input name="tool" id="tool" type="text" class="form-control"  placeholder="GitHub">
+                    </div>
+                    <div class="form-group">
+                        <label for="license">Licencia</label>
+                        <input name="license" id="license" type="text" class="form-control" placeholder="Fm">
+                    </div>
+                    <div class="form-group">
+                        <label for="number">Numero de elemento</label>
+                        <input name="number" id="number" type="number" class="form-control" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="logo">Logo</label>
+                        <input name="logo" id="logo" type="file" class="form-control-file">
+                    </div>
+                    <input type="submit" id="send_element" class="btn btn-primary" value="Enviar">
+                    <input type="reset" class="btn btn-primary" value="Resetear">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped mt-3">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Simbolo</th>
+                    <th scope="col">Herramienta</th>
+                    <th scope="col">Licencia</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">Logo</th>
+                </tr>
+                </thead>
+                <tbody id="tool_list">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var xhReq = new XMLHttpRequest();
+        getTools();
+
+        function getTools(){
+            xhReq.open("POST","backend.php",true);
+            xhReq.onload = getToolsResponse;
+            var data = {
+                action: "get_tools"
+            };
+            xhReq.send(JSON.stringify(data));
+        }
+        function getToolsResponse() {
+            if(xhReq.status == 200)
+            {
+                console.log(xhReq.responseText);
+                var response = JSON.parse(xhReq.responseText);
+                if (response.success == true)
+                {
+                    for (var i = 0; i < response.array.length; i++)
+                    {
+                        addToolToList(
+                            response.array[i].symbol,
+                            response.array[i].tool,
+                            response.array[i].license,
+                            response.array[i].number,
+                            //atob(response.array[i].logo)
+                            response.array[i].logo
+                        );
+                    }
+                }
+                else
+                {
+                    alert("Error");
+                }
+            }
+        }
+        function addToolToList(tool_symbol,tool,license,number,logo) {
+            var tbodyToolList = document.getElementById("tool_list");
+
+            var trTool = document.createElement("TR");
+
+            var tdToolSymbol = document.createElement("TD");
+            tdToolSymbol.setAttribute("scope", "col");
+            tdToolSymbol.innerText = tool_symbol;
+            trTool.appendChild(tdToolSymbol);
+
+            var tdTool = document.createElement("TD");
+            tdTool.setAttribute("scope", "col");
+            tdTool.innerText = tool;
+            trTool.appendChild(tdTool);
+
+            var tdLicense = document.createElement("TD");
+            tdLicense.setAttribute("scope", "col");
+            tdLicense.innerText = license;
+            trTool.appendChild(tdLicense);
+
+            var tdNumber = document.createElement("TD");
+            tdNumber.setAttribute("scope", "col");
+            tdNumber.innerText = number;
+            trTool.appendChild(tdNumber);
+
+            var tdLogo = document.createElement("TD");
+            tdLogo.setAttribute("scope", "col");
+            if (logo)
+            {
+                var imgLogo = document.createElement("IMG");
+                imgLogo.setAttribute("SRC", "data:image;base64," + logo);
+                imgLogo.setAttribute("class", "img-fluid img-thumbnail mx-auto d-block");
+                imgLogo.setAttribute("height", "50px");
+                imgLogo.setAttribute("width", "50px");
+
+                tdLogo.appendChild(imgLogo);
+            }
+            else
+            {
+                tdLogo.innerText = "Undefined";
+            }
+            trTool.appendChild(tdLogo);
+
+
+            tbodyToolList.appendChild(trTool);
+        }
+    </script>
+</body>
+</html>
