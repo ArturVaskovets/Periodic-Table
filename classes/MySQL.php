@@ -9,16 +9,16 @@ class MySQL
     {
         $this->dbConn = new mysqli(
             "localhost",
-            "root",
-            "artur",
-            "dbdevops");
+            "root", // Change me
+            "artur", // Change me
+            "dbDevops");
         if ($this->dbConn->connect_error)
             exit("Connection error");
     }
 
     public function addTool($symbol,$tool,$license,$number,$logo)
     {
-        $insert_tool_query = "INSERT INTO dbdevops.tbdevops VALUES ('{$symbol}','{$tool}','{$license}','{$number}','{$logo}')";
+        $insert_tool_query = "INSERT INTO dbDevops.tbDevops VALUES ('{$symbol}','{$tool}','{$license}','{$number}','{$logo}')";
         if ($this->dbConn->query($insert_tool_query))
             echo "<h1>Añadido correctamente</h1>";
         else
@@ -26,7 +26,7 @@ class MySQL
     }
     public function getTools()
     {
-        $select_tools_query = "SELECT * FROM dbdevops.tbdevops";
+        $select_tools_query = "SELECT * FROM dbDevops.tbDevops ORDER BY NumeroElementoQuimico";
         $result = $this->dbConn->query($select_tools_query);
         $array = array();
         if($result->num_rows > 0)

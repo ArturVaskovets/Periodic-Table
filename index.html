@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Image</title>
+    <title>Tabla periodica</title>
     <link rel="stylesheet" href="styles/bootstrap.min.css">
 </head>
 <body>
@@ -31,6 +31,7 @@
                     </div>
                     <input type="submit" id="send_element" class="btn btn-primary" value="Enviar">
                     <input type="reset" class="btn btn-primary" value="Resetear">
+                    <input type="button" class="btn btn-primary" value="Ver tabla completa" onclick="window.location.href='table.html'">
                 </form>
             </div>
         </div>
@@ -75,7 +76,6 @@
                             response.array[i].tool,
                             response.array[i].license,
                             response.array[i].number,
-                            //atob(response.array[i].logo)
                             response.array[i].logo
                         );
                     }
@@ -117,7 +117,7 @@
             {
                 var imgLogo = document.createElement("IMG");
                 imgLogo.setAttribute("SRC", "data:image;base64," + logo);
-                imgLogo.setAttribute("class", "img-fluid img-thumbnail mx-auto d-block");
+                imgLogo.setAttribute("class", "img-fluid img-thumbnail");
                 imgLogo.setAttribute("height", "50px");
                 imgLogo.setAttribute("width", "50px");
 
